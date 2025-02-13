@@ -1,0 +1,51 @@
+$samsung-width: 412px;
+$samsung-height: 846px;
+// $iphone-width: 375px;
+// $iphone-height: 667px;
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: 'Open Sans', sans-serif;
+    color: #929292;
+    background-color: #261c56;
+}
+
+.app,
+.header,
+.main,
+.footer {
+    border: 1px solid red;
+}
+.header__btn,
+.header__page-title,
+.capital,
+.chart,
+.bots-panel,
+.main__controls {
+    border: 1px solid red;
+}
+.footer__item {
+    border: 1px solid red;
+}
+
+.app {
+    width: 100%;
+    max-width: $samsung-width;
+    height: 100vh;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+
+    // @media (max-width: $iphone-width) {
+    //     padding: 10px;
+    // }
+}
