@@ -1,5 +1,5 @@
-// $samsung-width: 412px;
-// $samsung-height: 846px;
+$samsung-width: 412px;
+$samsung-height: 846px;
 $iphone-width: 375px;
 $iphone-height: 667px;
 
@@ -18,49 +18,46 @@ $color-bg-secondary: rgba($color-text-primary, 0.2);
     box-sizing: border-box;
 }
 
-html,
-body {
-    width: 100vw;
-    // height: 100vh;
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
-    // overflow: hidden;
-    font-family: 'Open Sans', sans-serif;
-    // font-family: 'Roboto', sans-serif;
-    font-weight: 400;
-    // color: #929292;
-    color: $color-text-primary;
-    background-color: $color-bg-primary;
-}
-
 ul {
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
-.app {
-    outline: 1px solid white;
+body {
+    width: $iphone-width;
+    height: $iphone-height;
+    margin: 0 auto;
+    margin-top: 20px;
+    padding: 0;
+    overflow: hidden;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    color: $color-text-primary;
+    background-color: #1e1e1e;
+
+    // @media (min-width: #{$iphone-width + 1px}) {
+    //     width: $samsung-width;
+    //     height: $samsung-height;
+    // }
 }
-.main {
-    border: 1px solid red;
+
+#root {
+    height: 100%;
+}
+
+.app {
+    min-height: 100px;
 }
 
 .app {
     position: relative;
     width: 100%;
-    max-width: $iphone-width;
-    // height: 100vh;
-    min-height: 100vh;
+    height: 100%;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
     background-image: url('/public/img/bg/bg.png');
-
-    // @media (max-width: $iphone-width) {
-    //     padding: 10px;
-    // }
 }
 
 .header {
@@ -70,7 +67,6 @@ ul {
     height: 70px;
     min-height: 70px;
     padding: 0 10px;
-    // background-image: url('/public/img/bg/bg_header.png');
     background-image: url('/public/img/bg/bg2.png');
     background-position-x: center;
     background-size: 90%;
@@ -216,7 +212,7 @@ ul {
         &--primary {
             font-size: 10px;
             width: 105px;
-            line-height: 20px;
+            line-height: 14px;
         }
 
         &--balance,
@@ -253,7 +249,7 @@ ul {
 }
 
 .chart {
-    height: 200px;
+    height: 210px;
     margin-bottom: 15px;
 }
 
@@ -387,11 +383,9 @@ ul {
 }
 
 .footer {
-    // position: fixed;
-    // bottom: 0;
     width: 100%;
-    max-width: $iphone-width;
     height: 50px;
+    margin-top: auto;
 
     &__items {
         display: flex;
