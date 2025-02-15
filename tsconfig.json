@@ -8,6 +8,7 @@
         "target": "ES6",
         "module": "ESNext",
         "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true,
         "outDir": "./dist",
         "baseUrl": ".",
         "paths": {

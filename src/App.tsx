@@ -1,113 +1,112 @@
 import React from 'react';
-import { useState } from 'react';
-import { RefreshCw, Menu, HelpCircle } from 'lucide-react';
+import { useState, useMemo, useEffect } from 'react';
 import { AreaChart, Area, XAxis, ResponsiveContainer } from 'recharts';
-// import Dashboard from '@/components/Dashboard';
 import '@fontsource/open-sans/400.css';
 import '@fontsource/open-sans/600.css';
 import '@fontsource/open-sans/700.css';
 // import '@fontsource/roboto/400.css';
 // import '@fontsource/roboto/500.css';
 // import '@fontsource/roboto/700.css';
+import jsonData from '@/constants/data.min.json';
+import Bot from '@/components/Bot';
+
+const { trading_capital, trading_capital_currency, balance, on_hold, bots } =
+    jsonData;
 
 const App = () => {
-    const [timeRange, setTimeRange] = useState('All time');
+    const timeRanges = ['24h', '7 days', '30 days', 'All time'];
+    const botSlots = [
+        'orange_bot',
+        'empty_slot',
+        'blue_bot',
+        'green_bot',
+        'yellow_bot',
+        'red_bot',
+    ];
+    const [currentTimeRange, setCurrentTimeRange] = useState(
+        localStorage.getItem('currentTimeRange') || 'All time'
+    );
+    const [currentBot, setCurrentBot] = useState<string | null>(
+        localStorage.getItem('currentBot') || 'yellow_bot'
+    );
 
     type DataPoint = {
         date: string;
         value: number;
     };
 
-    // const data: DataPoint[] = [
-    //     { date: '22.04', value: 800 },
-    //     { date: '23.04', value: 1200 },
-    //     { date: '24.04', value: 900 },
-    //     { date: '25.04', value: 1100 },
-    //     { date: '26.04', value: 1000 },
-    // ];
-
-    // const generateRandomFullData = (baseData: DataPoint[]) => {
-    //     const detailedData: DataPoint[] = [];
-
-    //     for (let i = 0; i < baseData.length - 1; i++) {
-    //         const start = baseData[i];
-    //         const end = baseData[i + 1];
-
-    //         for (let j = 0; j < 6; j++) {
-    //             detailedData.push({
-    //                 date: start.date,
-    //                 value: Math.floor(Math.random() * (1200 - 800 + 1)) + 800,
-    //             });
-    //         }
-    //     }
-
-    //     detailedData.push(baseData[baseData.length - 1]);
-
-    //     return detailedData;
-    // };
-
     function generateRandomData() {
         const data = [];
         const startDate = new Date(2025, 3, 22); // 22 апреля
 
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 5; i++) {
             const currentDate = new Date(
-                startDate.getTime() + (i * 24 * 60 * 60 * 1000) / 5
-            ); // Равномерное распределение точек
+                startDate.getTime() + i * 24 * 60 * 60 * 1000
+            );
             const formattedDate = `${currentDate
                 .getDate()
                 .toString()
                 .padStart(2, '0')}.${(currentDate.getMonth() + 1)
                 .toString()
                 .padStart(2, '0')}`;
-            const value = Math.floor(Math.random() * (1300 - 700 + 1)) + 700;
 
-            data.push({ date: formattedDate, value });
+            for (let j = 0; j < 7; j++) {
+                const value =
+                    Math.floor(Math.random() * (1300 - 700 + 1)) + 700;
+                data.push({ date: formattedDate, value });
+            }
         }
 
+        console.log(data);
         return data;
     }
 
-    const fullData = generateRandomData();
-    console.log(fullData);
+    const getBotProfit = (name: string): number => {
+        const timeRangeMap: Record<string, string> = {
+            '24h': '24h',
+            '7 days': '7d',
+            '30 days': '30d',
+            'All time': 'all_time',
+        };
 
-    const botData = [
-        {
-            name: 'ATTACK',
-            color: 'text-orange-500',
-            value: '-8.2%',
-            icon: '👾',
-        },
-        {
-            name: 'PLACE BOT HERE',
-            color: 'text-gray-600',
-            value: '',
-            icon: '👾',
-        },
-        { name: 'BALANCE', color: 'text-cyan-400', value: '-3.7%', icon: '👾' },
-        {
-            name: 'DEFENCE',
-            color: 'text-green-500',
-            value: '+2.5%',
-            icon: '👾',
-        },
-        {
-            name: 'MEGABOT',
-            color: 'text-yellow-400',
-            value: '+3.6%',
-            icon: '👾',
-        },
-        { name: 'ATTACK', color: 'text-red-500', value: '+13.7%', icon: '👾' },
-    ];
+        const bot = bots.find((bot) => bot.name === name);
+        if (!bot) return 0;
 
-    const timeRanges = ['24h', '7 days', '30 days', 'All time'];
-    const navItems = [
-        'Dashboard',
-        'Megabot',
-        'Bot market',
-        'Coin prices',
-        'Profile',
-    ];
+        const key = timeRangeMap[currentTimeRange];
+        const value = key ? bot[key as keyof typeof bot] : null;
+
+        return typeof value === 'number' ? value : 0;
+    };
+
+    const getBotTitle = (name: string): string => {
+        const botTitleMap: Record<string, string> = {
+            yellow_bot: 'Megabot',
+            white_bot: 'Defence',
+            green_bot: 'Defence',
+            red_bot: 'Attack',
+            blue_bot: 'Balance',
+            orange_bot: 'Attack',
+        };
+
+        const bot = bots.find((bot) => bot.name === name);
+        if (!bot) return 'no data';
+
+        const botName = botTitleMap[name];
+        return botName;
+    };
+
+    const fullData = useMemo(generateRandomData, [
+        currentBot,
+        currentTimeRange,
+    ]);
+
+    useEffect(() => {
+        localStorage.setItem('currentTimeRange', currentTimeRange);
+        if (currentBot) {
+            localStorage.setItem('currentBot', currentBot);
+        }
+    }, [currentTimeRange, currentBot]);
+
     return (
         <div>
             <div className="app">
@@ -135,7 +134,7 @@ const App = () => {
                                 Trading capital
                             </div>
                             <div className="capital__sum capital__sum--primary">
-                                1.00865 BTC
+                                {trading_capital} {trading_capital_currency}
                             </div>
                         </div>
                         <div className="capital__right">
@@ -147,7 +146,7 @@ const App = () => {
                                     Balance:
                                 </div>
                                 <div className="capital__sum capital__sum--balance">
-                                    10 850
+                                    {balance}
                                     <img
                                         className="capital__coin"
                                         src="img/icons/coin.png"
@@ -160,7 +159,7 @@ const App = () => {
                                     On hold:
                                 </div>
                                 <div className="capital__sum capital__sum--on-hold">
-                                    24 000
+                                    {on_hold}
                                     <img
                                         className="capital__coin"
                                         src="img/icons/coin.png"
@@ -206,108 +205,40 @@ const App = () => {
                     </div>
                     <div className="bots">
                         <ul className="bots__items">
-                            <li className="bots__item">
-                                <div className="bot">
-                                    <div className="bot__image-wrapper">
-                                        <img
-                                            className="bot__image-pic"
-                                            src="img/bots/bot_orange.png"
-                                            alt="bot_orange"
-                                        ></img>
-                                    </div>
-                                    <span className="bot__title">Attack</span>
-                                    <span className="bot__profit bot__profit--alert">
-                                        -8.2%
-                                    </span>
-                                </div>
-                            </li>
-                            <li className="bots__item">
-                                <div className="bot">
-                                    <div className="bot__image-wrapper">
-                                        <img
-                                            className="bot__image-pic"
-                                            src="img/bots/bot_gray.png"
-                                            alt="bot_gray"
-                                        ></img>
-                                    </div>
-                                    <span className="bot__title bot__title--disabled">
-                                        Place bot
-                                        <br />
-                                        here
-                                    </span>
-                                    <span className="bot__profit"></span>
-                                </div>
-                            </li>
-                            <li className="bots__item">
-                                <div className="bot">
-                                    <div className="bot__image-wrapper">
-                                        <img
-                                            className="bot__image-pic"
-                                            src="img/bots/bot_blue.png"
-                                            alt="bot_blue"
-                                        ></img>
-                                    </div>
-                                    <span className="bot__title">Balance</span>
-                                    <span className="bot__profit bot__profit--alert">
-                                        -3.7%
-                                    </span>
-                                </div>
-                            </li>
-                            <li className="bots__item">
-                                <div className="bot">
-                                    <div className="bot__image-wrapper">
-                                        <img
-                                            className="bot__image-pic"
-                                            src="img/bots/bot_green.png"
-                                            alt="bot_green"
-                                        ></img>
-                                    </div>
-                                    <span className="bot__title">Defence</span>
-                                    <span className="bot__profit">+2.5%</span>
-                                </div>
-                            </li>
-                            <li className="bots__item">
-                                <div className="bot">
-                                    <div className="bot__image-wrapper">
-                                        <img
-                                            className="bot__image-pic bot__image-pic--big"
-                                            src="img/bots/bot_yellow.png"
-                                            alt="bot_yellow"
-                                        ></img>
-                                    </div>
-                                    <span className="bot__title">Megabot</span>
-                                    <span className="bot__profit">+3.6%</span>
-                                </div>
-                            </li>
-                            <li className="bots__item">
-                                <div className="bot">
-                                    <div className="bot__image-wrapper">
-                                        <img
-                                            className="bot__image-pic"
-                                            src="img/bots/bot_red.png"
-                                            alt="bot_red"
-                                        ></img>
-                                    </div>
-                                    <span className="bot__title">Attack</span>
-                                    <span className="bot__profit">+13.7%</span>
-                                </div>
-                            </li>
+                            {botSlots.map((botName) => (
+                                <li key={botName} className="bots__item">
+                                    {botName === 'empty_slot' ? (
+                                        <Bot name="empty_slot" />
+                                    ) : (
+                                        <Bot
+                                            name={botName}
+                                            isCurrent={botName === currentBot}
+                                            title={getBotTitle(botName)}
+                                            profit={getBotProfit(botName)}
+                                            onClick={() =>
+                                                setCurrentBot(botName)
+                                            }
+                                        />
+                                    )}
+                                </li>
+                            ))}
                         </ul>
                     </div>
                     <div className="controls">
                         <span className="controls__title">Time range:</span>
-                        <button className="controls__btn btn btn--regular">
-                            24h
-                        </button>
-                        <button className="controls__btn btn btn--regular">
-                            7 days
-                        </button>
-                        <button className="controls__btn btn btn--regular">
-                            30 days
-                        </button>
-                        <button className="controls__btn btn btn--regular btn--regular-selected">
-                            All time
-                        </button>
+                        {timeRanges.map((range) => (
+                            <button
+                                key={range}
+                                className={`controls__btn btn btn--regular ${
+                                    currentTimeRange === range
+                                        ? 'btn--regular-selected'
+                                        : ''
+                                }`}
+                                onClick={() => setCurrentTimeRange(range)}
+                            >
+                                {range}
+                            </button>
+                        ))}
                     </div>
                 </div>
                 <div className="footer">
