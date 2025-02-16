@@ -1,6 +1,6 @@
 import React from 'react';
-
-interface BotProps {
+import '@/styles/components/bot.scss';
+interface IBotProps {
     name: string;
     isCurrent?: boolean;
     title?: string;
@@ -8,7 +8,7 @@ interface BotProps {
     onClick?: () => void;
 }
 
-const Bot: React.FC<BotProps> = ({
+const Bot: React.FC<IBotProps> = ({
     name,
     isCurrent,
     title,

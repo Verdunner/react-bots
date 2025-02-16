@@ -1,0 +1,71 @@
+@use '@/styles/utils' as *;
+
+.capital {
+    display: flex;
+    justify-content: space-between;
+    height: 48px;
+    padding: 0 15px;
+    margin-bottom: 30px;
+
+    @media (min-width: #{$iphone-width + 1px}) {
+        height: scaleHeightIphoneToSamsung(48px);
+    }
+
+    &__left {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__title {
+        text-transform: uppercase;
+
+        &--primary {
+            font-size: 12px;
+            line-height: 12px;
+            margin-bottom: 10px;
+        }
+
+        &--balance,
+        &--on-hold {
+            font-size: 12px;
+            line-height: 9px;
+        }
+    }
+
+    &__balance,
+    &__on-hold {
+        display: flex;
+        justify-content: space-between;
+        width: 130px;
+    }
+
+    &__balance {
+        margin-bottom: 8px;
+    }
+
+    &__sum {
+        text-transform: uppercase;
+        color: $color-text-accent;
+
+        &--primary {
+            font-size: 33px;
+            line-height: 22px;
+        }
+        &--balance,
+        &--on-hold {
+            width: 60px;
+            font-size: 13px;
+            line-height: 11px;
+            // height: 11px;
+            margin-top: -6px;
+            font-weight: 700;
+            // letter-spacing: 0.5px;
+        }
+    }
+
+    &__coin {
+        height: 15px;
+        transform: translate(3.5px, 2px);
+        margin: 0 0 0 3px;
+    }
+}

@@ -1,0 +1,16 @@
+@use '@/styles/utils' as *;
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+    padding: 7px 10px 0;
+    margin-bottom: 3px;
+    background-image: url('/public/img/bg/bg2.png');
+    background-position-x: center;
+    background-size: 90%;
+
+    @media (min-width: #{$iphone-width + 1px}) {
+        height: scaleHeightIphoneToSamsung(70px);
+    }
+}

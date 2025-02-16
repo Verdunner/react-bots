@@ -1,0 +1,26 @@
+@use '@/styles/utils' as *;
+
+.controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 25px;
+    padding: 0 15px;
+
+    @media (min-width: #{$iphone-width + 1px}) {
+        height: scaleHeightIphoneToSamsung(25px);
+    }
+
+    &__title {
+        display: flex;
+        align-items: center;
+        width: 80px;
+        padding-bottom: 3px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    &__btn:not(:last-child) {
+        margin-right: 4px;
+    }
+}

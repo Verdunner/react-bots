@@ -1,0 +1,33 @@
+@use '@/styles/utils' as *;
+
+.bots {
+    height: 215px;
+    margin-bottom: 14px;
+    padding: 1px 12px 0 16px;
+
+    @media (min-width: #{$iphone-width + 1px}) {
+        height: scaleHeightIphoneToSamsung(215px);
+    }
+
+    &__items {
+        display: flex;
+        flex-wrap: wrap;
+        height: 100%;
+    }
+    &__item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: calc(100% / 3 - 2px);
+        height: 104px;
+        margin: 0.5px 1px;
+
+        &:nth-child(n + 4) > * {
+            padding-top: 0;
+        }
+
+        @media (min-width: #{$iphone-width + 1px}) {
+            height: scaleHeightIphoneToSamsung(104px);
+        }
+    }
+}

@@ -1,0 +1,18 @@
+$iphone-width: 375px;
+$iphone-height: 667px;
+$samsung-width: 412px;
+$samsung-height: 846px;
+
+$color-text-primary: #4d6078;
+$color-text-accent: #ffffff;
+$color-text-alert: #f2427e;
+
+$color-bg-primary: rgb(17, 33, 53);
+$color-bg-secondary: rgba($color-text-primary, 0.2);
+
+@function scaleWidthIphoneToSamsung($width) {
+    @return $width * calc($samsung-width / $iphone-width);
+}
+@function scaleHeightIphoneToSamsung($height) {
+    @return $height * calc($samsung-height / $iphone-height);
+}
