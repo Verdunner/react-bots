@@ -1,6 +1,8 @@
 ## REACT-BOTS
 
-### SPA с графиком Recharts, адаптировано под iPhone 6S (Safari Mobile) и Samsung S8 Plus (Chrome)
+### SPA-приложение с графиком Recharts
+
+#### Адаптировано под iPhone 6S (Safari Mobile) и Samsung S8 Plus (Chrome)
 
 ![dates-slider](public/img/layout_result.png)
 
