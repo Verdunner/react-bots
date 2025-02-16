@@ -13,32 +13,40 @@ import '@fontsource/open-sans/700.css';
 // import '@fontsource/roboto/400.css';
 // import '@fontsource/roboto/500.css';
 // import '@fontsource/roboto/700.css';
-import jsonData from '@/constants/data.min.json';
 import Bot from '@/components/Bot';
+import RefreshIcon from '@/components/icons/RefreshIcon';
+import OptionsIcon from '@/components/icons/OptionsIcon';
 import BulletsIcon from '@/components/icons/BulletsIcon';
 import ChartIcon from '@/components/icons/ChartIcon';
 import CartIcon from '@/components/icons/CartIcon';
 import DollarIcon from '@/components/icons/DollarIcon';
 import SettingsIcon from '@/components/icons/SettingsIcon';
+import jsonData from '@/constants/data.min.json';
+import {
+    timeRanges,
+    timeRangesMapped,
+    botSlots,
+    botTitles,
+} from '@/constants/constants';
+import useLocalStorageState from '@/hooks/useLocalStorageState';
 
 const { trading_capital, trading_capital_currency, balance, on_hold, bots } =
     jsonData;
 
 const App = () => {
-    const timeRanges = ['24h', '7 days', '30 days', 'All time'];
-    const botSlots = [
-        'orange_bot',
-        'empty_slot',
-        'blue_bot',
-        'green_bot',
-        'yellow_bot',
-        'red_bot',
-    ];
-    const [currentTimeRange, setCurrentTimeRange] = useState(
-        localStorage.getItem('currentTimeRange') || 'All time'
+    // const [currentTimeRange, setCurrentTimeRange] = useState(
+    //     localStorage.getItem('currentTimeRange') || 'All time'
+    // );
+    // const [currentBot, setCurrentBot] = useState<string | null>(
+    //     localStorage.getItem('currentBot') || 'yellow_bot'
+    // );
+    const [currentTimeRange, setCurrentTimeRange] = useLocalStorageState(
+        'currentTimeRange',
+        'All time'
     );
-    const [currentBot, setCurrentBot] = useState<string | null>(
-        localStorage.getItem('currentBot') || 'yellow_bot'
+    const [currentBot, setCurrentBot] = useLocalStorageState<string | null>(
+        'currentBot',
+        'yellow_bot'
     );
 
     type DataPoint = {
@@ -109,37 +117,18 @@ const App = () => {
     };
 
     const getBotProfit = (name: string): number => {
-        const timeRangeMap: Record<string, string> = {
-            '24h': '24h',
-            '7 days': '7d',
-            '30 days': '30d',
-            'All time': 'all_time',
-        };
-
         const bot = bots.find((bot) => bot.name === name);
         if (!bot) return 0;
 
-        const key = timeRangeMap[currentTimeRange];
+        const key = timeRangesMapped[currentTimeRange];
         const value = key ? bot[key as keyof typeof bot] : null;
 
         return typeof value === 'number' ? value : 0;
     };
 
-    const getBotTitle = (name: string): string => {
-        const botTitleMap: Record<string, string> = {
-            yellow_bot: 'Megabot',
-            white_bot: 'Defence',
-            green_bot: 'Defence',
-            red_bot: 'Attack',
-            blue_bot: 'Balance',
-            orange_bot: 'Attack',
-        };
-
-        const bot = bots.find((bot) => bot.name === name);
-        if (!bot) return 'no data';
-
-        const botName = botTitleMap[name];
-        return botName;
+    const formatBalance = (balance: number) => {
+        const str = String(balance);
+        return str.slice(0, -3) + ' ' + str.slice(-3);
     };
 
     const fullData = useMemo(generateRandomData, [
@@ -147,30 +136,22 @@ const App = () => {
         currentTimeRange,
     ]);
 
-    useEffect(() => {
-        localStorage.setItem('currentTimeRange', currentTimeRange);
-        if (currentBot) {
-            localStorage.setItem('currentBot', currentBot);
-        }
-    }, [currentTimeRange, currentBot]);
+    // useEffect(() => {
+    //     localStorage.setItem('currentTimeRange', currentTimeRange);
+    //     if (currentBot) {
+    //         localStorage.setItem('currentBot', currentBot);
+    //     }
+    // }, [currentTimeRange, currentBot]);
 
     return (
         <div className="app">
             <div className="header">
-                <button className="header__btn btn btn--iconed">
-                    <img
-                        className="btn__pic"
-                        src="./img/icons/options.svg"
-                        alt="options"
-                    />
+                <button className="header__btn btn btn--iconed btn--iconed-enlarged">
+                    <OptionsIcon className="btn__pic" />
                 </button>
                 <h1 className="header__page-title title">Dashboard</h1>
                 <button className="header__btn btn btn--iconed">
-                    <img
-                        className="btn__pic"
-                        src="./img/icons/refresh.svg"
-                        alt="refresh"
-                    />
+                    <RefreshIcon className="btn__pic" />
                 </button>
             </div>
             <div className="main">
@@ -192,7 +173,7 @@ const App = () => {
                                 Balance:
                             </div>
                             <div className="capital__sum capital__sum--balance">
-                                {balance}
+                                {formatBalance(balance)}
                                 <img
                                     className="capital__coin"
                                     src="img/icons/coin.png"
@@ -205,7 +186,7 @@ const App = () => {
                                 On hold:
                             </div>
                             <div className="capital__sum capital__sum--on-hold">
-                                {on_hold}
+                                {formatBalance(on_hold)}
                                 <img
                                     className="capital__coin"
                                     src="img/icons/coin.png"
@@ -271,7 +252,7 @@ const App = () => {
                                 }
                                 tickLine={false}
                                 axisLine={false}
-                                tick={{ fontSize: 12 }}
+                                tick={{ fontSize: 10 }}
                             />
                             <Area
                                 type="monotone"
@@ -292,7 +273,7 @@ const App = () => {
                                     <Bot
                                         name={botName}
                                         isCurrent={botName === currentBot}
-                                        title={getBotTitle(botName)}
+                                        title={botTitles[botName]}
                                         profit={getBotProfit(botName)}
                                         onClick={() => setCurrentBot(botName)}
                                     />
@@ -302,7 +283,7 @@ const App = () => {
                     </ul>
                 </div>
                 <div className="controls">
-                    <span className="controls__title">Time range:</span>
+                    <span className="controls__title">Time Range:</span>
                     {timeRanges.map((range) => (
                         <button
                             key={range}
