@@ -1,7 +1,7 @@
-$samsung-width: 412px;
-$samsung-height: 846px;
 $iphone-width: 375px;
 $iphone-height: 667px;
+$samsung-width: 412px;
+$samsung-height: 846px;
 
 $color-text-primary: #4d6078;
 $color-text-accent: #ffffff;
@@ -12,6 +12,13 @@ $color-bg-secondary: rgba($color-text-primary, 0.2);
 
 @function scale($size) {
     @return $size * 1.2;
+}
+
+@function scaleWidthIphoneToSamsung($width) {
+    @return $width * ($samsung-width / $iphone-width);
+}
+@function scaleHeightIphoneToSamsung($height) {
+    @return $height * ($samsung-height / $iphone-height);
 }
 
 * {
@@ -44,10 +51,6 @@ body {
 
 #root {
     height: 100%;
-}
-
-.app {
-    min-height: 100px;
 }
 
 .app {
@@ -123,6 +126,9 @@ body {
     }
 
     &--nav:hover & {
+        &__pic {
+            color: $color-text-accent;
+        }
         &__label {
             color: $color-text-accent;
         }
@@ -165,6 +171,9 @@ body {
     }
 
     &--nav-selected & {
+        &__pic {
+            color: $color-text-accent;
+        }
         &__label {
             color: $color-text-accent;
         }
@@ -181,6 +190,10 @@ body {
             background-color: $color-bg-secondary;
             cursor: pointer;
         }
+    }
+
+    &__pic {
+        color: $color-text-primary;
     }
 }
 

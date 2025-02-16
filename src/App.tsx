@@ -6,7 +6,6 @@ import {
     XAxis,
     ResponsiveContainer,
     ReferenceLine,
-    Line,
 } from 'recharts';
 import '@fontsource/open-sans/400.css';
 import '@fontsource/open-sans/600.css';
@@ -16,6 +15,11 @@ import '@fontsource/open-sans/700.css';
 // import '@fontsource/roboto/700.css';
 import jsonData from '@/constants/data.min.json';
 import Bot from '@/components/Bot';
+import BulletsIcon from '@/components/icons/BulletsIcon';
+import ChartIcon from '@/components/icons/ChartIcon';
+import CartIcon from '@/components/icons/CartIcon';
+import DollarIcon from '@/components/icons/DollarIcon';
+import SettingsIcon from '@/components/icons/SettingsIcon';
 
 const { trading_capital, trading_capital_currency, balance, on_hold, bots } =
     jsonData;
@@ -80,7 +84,7 @@ const App = () => {
     }
 
     const getVerticalLines = (data: { date: string; value: number }[]) => {
-        console.log(data);
+        // console.log(data);
 
         return data.map((item, index) => {
             const dateStart = Number(item.date.slice(0, 2));
@@ -318,51 +322,31 @@ const App = () => {
                 <ul className="footer__items">
                     <li className="footer__item">
                         <button className="footer__btn btn btn--nav btn--nav-selected">
-                            <img
-                                className="btn__pic"
-                                src="./img/icons/bullets.svg"
-                                alt="bullets"
-                            ></img>
+                            <BulletsIcon className="btn__pic" />
                             <span className="btn__label">Dashboard</span>
                         </button>
                     </li>
                     <li className="footer__item">
                         <button className="footer__btn btn btn--nav">
-                            <img
-                                className="btn__pic"
-                                src="./img/icons/chart.svg"
-                                alt="chart"
-                            ></img>
+                            <ChartIcon className="btn__pic" />
                             <span className="btn__label">Megabot</span>
                         </button>
                     </li>
                     <li className="footer__item">
                         <button className="footer__btn btn btn--nav">
-                            <img
-                                className="btn__pic"
-                                src="./img/icons/cart.svg"
-                                alt="cart"
-                            ></img>
+                            <CartIcon className="btn__pic" />
                             <span className="btn__label">Bot market</span>
                         </button>
                     </li>
                     <li className="footer__item">
                         <button className="footer__btn btn btn--nav">
-                            <img
-                                className="btn__pic"
-                                src="./img/icons/dollar.svg"
-                                alt="dollar"
-                            ></img>
+                            <DollarIcon className="btn__pic" />
                             <span className="btn__label">Coin Prices</span>
                         </button>
                     </li>
                     <li className="footer__item">
                         <button className="footer__btn btn btn--nav">
-                            <img
-                                className="btn__pic"
-                                src="./img/icons/settings.svg"
-                                alt="settings"
-                            ></img>
+                            <SettingsIcon className="btn__pic" />
                             <span className="btn__label">Profile</span>
                             <div className="btn__mark">3</div>
                         </button>
