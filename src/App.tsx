@@ -1,5 +1,16 @@
-import React from 'react';
-import { useState, useMemo, useEffect } from 'react';
+import React, { useMemo } from 'react';
+import '@fontsource/open-sans/400.css';
+import '@fontsource/open-sans/600.css';
+import '@fontsource/open-sans/700.css';
+import {
+    RefreshIcon,
+    OptionsIcon,
+    BulletsIcon,
+    ChartIcon,
+    CartIcon,
+    DollarIcon,
+    SettingsIcon,
+} from '@/components/icons';
 import {
     AreaChart,
     Area,
@@ -7,39 +18,19 @@ import {
     ResponsiveContainer,
     ReferenceLine,
 } from 'recharts';
-import '@fontsource/open-sans/400.css';
-import '@fontsource/open-sans/600.css';
-import '@fontsource/open-sans/700.css';
-// import '@fontsource/roboto/400.css';
-// import '@fontsource/roboto/500.css';
-// import '@fontsource/roboto/700.css';
-import Bot from '@/components/Bot';
-import RefreshIcon from '@/components/icons/RefreshIcon';
-import OptionsIcon from '@/components/icons/OptionsIcon';
-import BulletsIcon from '@/components/icons/BulletsIcon';
-import ChartIcon from '@/components/icons/ChartIcon';
-import CartIcon from '@/components/icons/CartIcon';
-import DollarIcon from '@/components/icons/DollarIcon';
-import SettingsIcon from '@/components/icons/SettingsIcon';
-import jsonData from '@/constants/data.min.json';
-import {
-    timeRanges,
-    timeRangesMapped,
-    botSlots,
-    botTitles,
-} from '@/constants/constants';
-import useLocalStorageState from '@/hooks/useLocalStorageState';
 
-const { trading_capital, trading_capital_currency, balance, on_hold, bots } =
+import jsonData from '@/constants/data.min.json';
+const { trading_capital, trading_capital_currency, balance, on_hold } =
     jsonData;
+import { timeRanges, botSlots, botTitles } from '@/constants/constants';
+import generateRandomData from '@/utils/generateRandomData';
+import formatBalance from '@/utils/formatBalance';
+import { getBotProfit } from '@/utils/getBotProfit';
+import { getVerticalLines } from '@/utils/getVerticalLines';
+import useLocalStorageState from '@/hooks/useLocalStorageState';
+import Bot from '@/components/Bot';
 
 const App = () => {
-    // const [currentTimeRange, setCurrentTimeRange] = useState(
-    //     localStorage.getItem('currentTimeRange') || 'All time'
-    // );
-    // const [currentBot, setCurrentBot] = useState<string | null>(
-    //     localStorage.getItem('currentBot') || 'yellow_bot'
-    // );
     const [currentTimeRange, setCurrentTimeRange] = useLocalStorageState(
         'currentTimeRange',
         'All time'
@@ -49,99 +40,10 @@ const App = () => {
         'yellow_bot'
     );
 
-    type DataPoint = {
-        date: string;
-        value: number;
-    };
-
-    function generateRandomData() {
-        const result: { date: string; value: number }[] = [];
-        const dates = [
-            '21.04',
-            '22.04',
-            '23.04',
-            '24.04',
-            '25.04',
-            '26.04',
-            '27.04',
-        ];
-
-        const addValuesForDate = (date: string, count: number) => {
-            const getRandomValue = () =>
-                Math.floor(Math.random() * (1300 - 700 + 1)) + 700;
-
-            if (date !== '21.04' && date !== '27.04') {
-                for (let i = 0; i < count; i++) {
-                    result.push({ date, value: getRandomValue() });
-                }
-            } else if (date === '21.04') {
-                for (let i = 0; i < 3; i++) {
-                    result.push({ date, value: getRandomValue() });
-                }
-            } else if (date === '27.04') {
-                for (let i = 0; i < 3; i++) {
-                    result.push({ date, value: getRandomValue() });
-                }
-            }
-        };
-        dates.forEach((date) => addValuesForDate(date, 6));
-
-        // console.log(result);
-
-        return result;
-    }
-
-    const getVerticalLines = (data: { date: string; value: number }[]) => {
-        // console.log(data);
-
-        return data.map((item, index) => {
-            const dateStart = Number(item.date.slice(0, 2));
-            let isVisible = false;
-
-            // Формула для выравнивания вертикальных линий по оси X
-            // Для дат 22-26 линии сдвинул динамически по индексу, чтобы они визуально совпадали с графиком
-            if (dateStart >= 22 && dateStart <= 26) {
-                isVisible = (index - 3) % 6 === dateStart - 21;
-            }
-
-            return (
-                <ReferenceLine
-                    key={`${item.date}-${item.value}-${index}`}
-                    x={index}
-                    stroke="rgba(0, 105, 188, 0.2)"
-                    strokeDasharray="2 1"
-                    strokeOpacity={isVisible ? 1 : 0}
-                />
-            );
-        });
-    };
-
-    const getBotProfit = (name: string): number => {
-        const bot = bots.find((bot) => bot.name === name);
-        if (!bot) return 0;
-
-        const key = timeRangesMapped[currentTimeRange];
-        const value = key ? bot[key as keyof typeof bot] : null;
-
-        return typeof value === 'number' ? value : 0;
-    };
-
-    const formatBalance = (balance: number) => {
-        const str = String(balance);
-        return str.slice(0, -3) + ' ' + str.slice(-3);
-    };
-
     const fullData = useMemo(generateRandomData, [
         currentBot,
         currentTimeRange,
     ]);
-
-    // useEffect(() => {
-    //     localStorage.setItem('currentTimeRange', currentTimeRange);
-    //     if (currentBot) {
-    //         localStorage.setItem('currentBot', currentBot);
-    //     }
-    // }, [currentTimeRange, currentBot]);
 
     return (
         <div className="app">
@@ -274,7 +176,10 @@ const App = () => {
                                         name={botName}
                                         isCurrent={botName === currentBot}
                                         title={botTitles[botName]}
-                                        profit={getBotProfit(botName)}
+                                        profit={getBotProfit(
+                                            botName,
+                                            currentTimeRange
+                                        )}
                                         onClick={() => setCurrentBot(botName)}
                                     />
                                 )}
