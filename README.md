@@ -1,8 +1,6 @@
 ## REACT-BOTS
 
-### SPA с графиком Recharts
-
-#### Адаптировано под iPhone 6S (Safari Mobile) и Samsung S8 Plus (Chrome)
+### SPA с графиком Recharts, адаптировано под iPhone 6S (Safari Mobile) и Samsung S8 Plus (Chrome)
 
 ![dates-slider](public/img/layout_result.png)
 
@@ -24,7 +22,7 @@
 
 -   React и ReactDOM
 
--   Шрифты Fontsource
+-   Шрифты FontSource
 
 -   Recharts для графиков
 
@@ -37,3 +35,15 @@
 -   TypeScript, @types-пакеты
 
 -   SCSS loader
+
+#### Инструменты для верстки по изображению:
+
+-   [Figma](https://www.figma.com/) - определение размеров элементов по картинке
+
+-   [IconFinder](https://www.iconfinder.com/) - бесплатные иконки
+
+-   [RedKetchup](https://redketchup.io/color-picker) - определение цветов
+
+-   [Online Image Editor](https://www.online-image-editor.com/) - обрезка слоёв в готовые картинки
+
+-   [Pix to pix](https://chromewebstore.google.com/detail/pix-to-pix-pixel-perfect/binboaimbgchaamickjnhgjdccohndin?utm_source=ext_app_menu) - проверка PixelPerfect
