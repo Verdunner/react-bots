@@ -4,7 +4,7 @@
 
 ![dates-slider](public/img/layout_result.png)
 
--   [Деплой проекта на Vercel](https://react-bots.vercel.app/)
+-   [Деплой проекта на Netlify](https://react-bots.netlify.app/)
 
 ---
 
