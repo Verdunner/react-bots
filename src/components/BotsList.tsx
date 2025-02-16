@@ -1,12 +1,11 @@
 import React from 'react';
-import '@/styles/components/bots.scss';
+import { botSlots } from '@/constants/constants';
 
-type BotsListProps = {
-    botSlots: string[];
+type TBotsListProps = {
     renderBot: (botName: string) => React.ReactNode;
 };
 
-const BotsList: React.FC<BotsListProps> = ({ botSlots, renderBot }) => {
+const BotsList: React.FC<TBotsListProps> = ({ renderBot }) => {
     return (
         <div className="bots">
             <ul className="bots__items">

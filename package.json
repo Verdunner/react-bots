@@ -12,8 +12,6 @@
     "description": "",
     "dependencies": {
         "@fontsource/open-sans": "^5.1.1",
-        "@fontsource/roboto": "^5.1.1",
-        "lucide-react": "^0.475.0",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
         "recharts": "^2.15.1"

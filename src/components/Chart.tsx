@@ -1,6 +1,4 @@
 import React from 'react';
-import '@/styles/components/chart.scss';
-
 import {
     ResponsiveContainer,
     AreaChart,
@@ -8,15 +6,13 @@ import {
     XAxis,
     ReferenceLine,
 } from 'recharts';
+import { getVerticalLines } from '@/utils/getVerticalLines';
 
 interface IChartProps {
     fullData: { date: string; value: number }[];
-    getVerticalLines: (
-        data: { date: string; value: number }[]
-    ) => React.ReactNode;
 }
 
-const Chart: React.FC<IChartProps> = ({ fullData, getVerticalLines }) => {
+const Chart: React.FC<IChartProps> = ({ fullData }) => {
     return (
         <div className="chart">
             <ResponsiveContainer width="100%" height="100%">

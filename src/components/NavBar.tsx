@@ -1,5 +1,5 @@
 import React from 'react';
-import '@/styles/components/navbar.scss';
+
 import {
     BulletsIcon,
     ChartIcon,
@@ -7,7 +7,7 @@ import {
     DollarIcon,
     SettingsIcon,
 } from '@/components/icons';
-const NavBar = () => {
+const NavBar: React.FC = () => {
     return (
         <div className="navbar">
             <button className="navbar__btn btn btn--nav btn--nav-selected">

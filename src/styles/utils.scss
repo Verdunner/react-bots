@@ -6,8 +6,9 @@ $samsung-height: 846px;
 $color-text-primary: #4d6078;
 $color-text-accent: #ffffff;
 $color-text-alert: #f2427e;
+$color-text-success: #5ea753;
 
-$color-bg-primary: rgb(17, 33, 53);
+$color-bg-primary: #112135;
 $color-bg-secondary: rgba($color-text-primary, 0.2);
 
 @function scaleWidthIphoneToSamsung($width) {

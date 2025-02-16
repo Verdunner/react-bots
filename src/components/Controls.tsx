@@ -1,14 +1,12 @@
 import React from 'react';
-import '@/styles/components/controls.scss';
+import { timeRanges } from '@/constants/constants';
 
 type TControlsProps = {
-    timeRanges: string[];
     currentTimeRange: string;
     setCurrentTimeRange: (range: string) => void;
 };
 
 const Controls: React.FC<TControlsProps> = ({
-    timeRanges,
     currentTimeRange,
     setCurrentTimeRange,
 }) => {

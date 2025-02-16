@@ -1,20 +1,21 @@
 import React from 'react';
-import '@/styles/components/bot.scss';
+import { getBotProfit } from '@/utils/getBotProfit';
+import { botTitles } from '@/constants/constants';
+
 interface IBotProps {
     name: string;
     isCurrent?: boolean;
-    title?: string;
-    profit?: string | number;
+    currentTimeRange?: string;
     onClick?: () => void;
 }
 
 const Bot: React.FC<IBotProps> = ({
     name,
     isCurrent,
-    title,
-    profit,
+    currentTimeRange = 'no data',
     onClick,
 }) => {
+    const profit = getBotProfit(name, currentTimeRange);
     return (
         <div
             className={`bot ${isCurrent ? 'bot--current' : ''} ${
@@ -43,7 +44,7 @@ const Bot: React.FC<IBotProps> = ({
                         here
                     </>
                 ) : (
-                    title
+                    botTitles[name]
                 )}
             </span>
             <span

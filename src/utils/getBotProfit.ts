@@ -5,12 +5,12 @@ const { bots } = jsonData;
 export const getBotProfit = (
     name: string,
     currentTimeRange: string
-): number => {
+): number | string => {
     const bot = bots.find((bot) => bot.name === name);
-    if (!bot) return 0;
+    if (!bot) return '';
 
     const key = timeRangesMapped[currentTimeRange];
     const value = key ? bot[key as keyof typeof bot] : null;
 
-    return typeof value === 'number' ? value : 0;
+    return typeof value === 'number' ? value : '';
 };
